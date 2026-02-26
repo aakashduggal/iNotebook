@@ -38,4 +38,31 @@ router.post('/addNote',fetchuser,[
     }
 })
 
+// route 3 : update note , login required, put request
+router.put('/update/:id', fetchuser, async (req, res)=>{
+    try {
+        const {title, description, tag} = req.body
+        const newNote = {}
+        if(title){newNote.title = title}
+        if(description){newNote.description = description}
+        if(tag){newNote.tag = tag}
+
+        let note = await Note.findById(req.params.id)
+        if(!note){
+           return res.status(401).send('No note to update')
+        }
+
+        if(note.user.toString() !== req.user.id){
+            return res.status(404).send("Unauthorised to do")
+        }
+
+        note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true})
+        res.send(note)
+
+
+    } catch (error) {
+        res.status(500).json("Server error while updating note")
+    }
+})
+
 module.exports = router
