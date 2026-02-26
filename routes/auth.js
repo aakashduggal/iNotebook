@@ -4,8 +4,10 @@ const User = require('../models/User')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-
+const fetchuser = require('../middleware/fetchuser')
 const JWT_Screte = 'AakashDuggalisagoodb$oy'
+
+// user creation route
 
 router.post('/create', [
     body('name', 'Enter a valid name').isLength(5),
@@ -73,6 +75,8 @@ router.post('/create', [
 
 })
 
+// login route
+
 router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password cannot be blank').exists()
@@ -107,9 +111,18 @@ router.post('/login', [
         console.error(error.message)
         res.status(500).json('Internal Server Error')
     }
+})
 
+// fetch user details route
 
-
+router.post('/getUser', fetchuser, async (req, res)=>{
+    try {
+        const userId = req.user.id
+        const user = await User.findById(userId).select("-password")
+        res.send(user)
+    } catch (error) {
+        res.status(500).json("Can't Fetched User Details")
+    }
 })
 
 module.exports = router

@@ -4,7 +4,7 @@ const connectedToMongo = require('./db')
 connectedToMongo()
 const app = express()
 
-const port = 3000
+const port = 5000
 
 
 app.get('/', (req, res)=>{
@@ -17,5 +17,5 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/notes', require('./routes/notes'))
 
 app.listen(port, ()=>{
-    console.log(`App is listening on the port http://localhost:${3000}`)
+    console.log(`App is listening on the port http://localhost:${port}`)
 }) 
