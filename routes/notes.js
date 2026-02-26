@@ -39,7 +39,7 @@ router.post('/addNote',fetchuser,[
 })
 
 // route 3 : update note , login required, put request
-router.put('/update/:id', fetchuser, async (req, res)=>{
+router.put('/updatenote/:id', fetchuser, async (req, res)=>{
     try {
         const {title, description, tag} = req.body
         const newNote = {}
@@ -62,6 +62,28 @@ router.put('/update/:id', fetchuser, async (req, res)=>{
 
     } catch (error) {
         res.status(500).json("Server error while updating note")
+    }
+})
+
+// route 4 : Delete note , login required, put request
+router.delete('/deletenote/:id', fetchuser, async (req, res)=>{
+    try {
+
+        let note = await Note.findById(req.params.id)
+        if(!note){
+           return res.status(401).send('No note to delete')
+        }
+
+        if(note.user.toString() !== req.user.id){
+            return res.status(404).send("Unauthorised to do")
+        }
+
+        note = await Note.findByIdAndDelete(req.params.id)
+        res.send("Note Deleted Successfully", note)
+
+
+    } catch (error) {
+        res.status(500).json("Server error while deleting note")
     }
 })
 
