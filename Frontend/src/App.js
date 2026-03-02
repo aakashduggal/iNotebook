@@ -1,4 +1,3 @@
-
 import About from './component/About';
 import Home from './component/Home';
 import Navbar from './component/Navbar';
@@ -7,14 +6,17 @@ import {
   Routes,
   Route
 } from 'react-router-dom'
-
+import NoteState from './context/NoteState';
+import Alert from './component/Alert';
 
 function App() {
   return (
 <>
+<NoteState>
 <Router>
 <Navbar/>
-<h1>This is iNotebook </h1>
+<Alert message ="This is iNotebook"/>
+<div className='container'>
 <Routes>
   
   <Route exact path="/" element ={<Home/>} />
@@ -22,7 +24,9 @@ function App() {
   <Route exact path="/about" element={<About/>} />
 
 </Routes>
+</div>
 </Router>
+</NoteState>
 </>
   );
 }
