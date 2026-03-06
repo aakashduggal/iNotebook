@@ -48,7 +48,15 @@ const deleteNote = (id)=>{
 }
 
 // update a note
-const updateNote = (id, title, description, tag)=>{
+const updateNote = async (id, title, description, tag)=>{
+   const response = await fetch(`${host}api/notes/updatenote/69a0328be0b6af3510e3e532`,{
+    method: 'PUT',
+    headers:{
+      'content-type' : 'application/json',
+      'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk5ZWY1YWQxYTVjZDUyYjFjNGI4ZDMzIn0sImlhdCI6MTc3MjA5ODU3Mn0.D4gaJtCLckLP7T3thRZ7XrMPfeFnafPJX0tU012CTfc'
+    },
+    body: json.stringify({title, description, tag})
+  })
 for(let i = 0; i<notes.length(); i++){
   const element = notes[i]
   if(element._id === id){
