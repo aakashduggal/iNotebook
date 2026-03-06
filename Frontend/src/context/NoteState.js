@@ -59,8 +59,9 @@ const addNote = (title, description, tag)=>{
 }
 
 // delete a note
-const deleteNote = ()=>{
-
+const deleteNote = (id)=>{
+  const newNotes = notes.filter((note)=>(note._id !== id))
+  setNotes(newNotes)
 }
 
 // update a note
