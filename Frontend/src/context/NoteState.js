@@ -52,7 +52,7 @@ const deleteNote = async (id)=>{
 }
 
 // update a note
-const updateNote = async (id, title, description, tag)=>{
+const editNote = async (id, title, description, tag)=>{
    const response = await fetch(`${host}/api/notes/updatenote/${id}`,{
     method: 'PUT',
     headers:{
@@ -64,20 +64,22 @@ const updateNote = async (id, title, description, tag)=>{
   })
   const json = response.json()
   console.log(json)
-for(let i = 0; i<notes.length; i++){
-  const element = notes[i]
+const newNote = JSON.parse(JSON.stringify(notes))
+for(let i = 0; i<newNote.length; i++){
+  const element = newNote[i]
   if(element._id === id){
-    element.title = title
-    element.description = description
-    element.tag = tag
+    newNote[i].title = title
+    newNote[i].description = description
+    newNote[i].tag = tag
+    break
   }
 }
- 
+setNotes(newNote)
 }
 
     return(
         <>
-        <NoteContext.Provider value={{notes, addNote, deleteNote, updateNote, fetchNotes}}>
+        <NoteContext.Provider value={{notes, addNote, deleteNote, editNote, fetchNotes}}>
             {props.children}
         </NoteContext.Provider>
         </>

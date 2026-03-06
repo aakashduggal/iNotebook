@@ -4,8 +4,8 @@ import Noteitem from './Noteitem'
 
 const Notes = () => {
 
-  const { notes, fetchNotes } = useContext(NoteContext)
-  const [note, setNote] = useState({ etitle: "", edescription: "", etag: "default" })
+  const { notes, fetchNotes, editNote } = useContext(NoteContext)
+  const [note, setNote] = useState({id: "", etitle: "", edescription: "", etag: "default" })
 
   useEffect(() => {
     fetchNotes()
@@ -13,16 +13,19 @@ const Notes = () => {
   }, [])
   
   const ref = useRef(null)
+  const refClose = useRef(null)
+  
   const updateNote = (newNote) => {
     ref.current.click()
-    setNote({etitle: newNote.title, edescription: newNote.description, etag: newNote.tag})
+    setNote({id: newNote._id, etitle: newNote.title, edescription: newNote.description, etag: newNote.tag})
   }
 
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
+    refClose.current.click()
+    editNote(note.id, note.etitle, note.edescription, note.etag)
   }
 
   const onChange = (e) => {
@@ -65,7 +68,7 @@ const Notes = () => {
               </form>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" ref = {refClose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" onClick={handleSubmit} className="btn btn-primary">Update Note</button>
             </div>
           </div>
