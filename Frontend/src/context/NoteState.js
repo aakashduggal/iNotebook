@@ -65,8 +65,15 @@ const deleteNote = (id)=>{
 }
 
 // update a note
-const updateNote = ()=>{
-
+const updateNote = (id, title, description, tag)=>{
+for(let i = 0; i<notes.length(); i++){
+  const element = notes[i]
+  if(element._id === id){
+    element.title = title,
+    element.description = description,
+    element.tag = tag
+  }
+}
 }
 
     return(
