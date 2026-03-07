@@ -14,7 +14,7 @@ const Notes = () => {
   
   const ref = useRef(null)
   const refClose = useRef(null)
-  
+
   const updateNote = (newNote) => {
     ref.current.click()
     setNote({id: newNote._id, etitle: newNote.title, edescription: newNote.description, etag: newNote.tag})
@@ -53,11 +53,11 @@ const Notes = () => {
               <form>
                 <div className="mb-3">
                   <label htmlFor="title" className="form-label">Title</label>
-                  <input type="text" className="form-control" id="etitle" name="etitle" value={note.etitle} onChange={onChange} aria-describedby="emailHelp" />
+                  <input type="text" className="form-control" id="etitle" name="etitle" value={note.etitle} minLength={5} required onChange={onChange} aria-describedby="emailHelp" />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="description" className="form-label">Description</label>
-                  <input type="text" className="form-control" id="edescription" name="edescription" value={note.edescription} onChange={onChange} />
+                  <input type="text" className="form-control" id="edescription" name="edescription" value={note.edescription} minLength={5} required onChange={onChange} />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="tag" className="form-label">Tag</label>
@@ -74,10 +74,16 @@ const Notes = () => {
           </div>
         </div>
       </div>        
-
+      
+      <div className="row my-3">
+        <h3>Your Notes</h3>
+        <div className="container">
+          {notes.length === 0 && 'No notes to display'}
+        </div>
       {notes.map((note) => {
         return <Noteitem key={note._id} updateNote={updateNote} note={note} />
       })}
+      </div>
     </div>
   )
 }
