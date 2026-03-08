@@ -24,7 +24,7 @@ const onChange = (e)=>{
         <form>
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" className="form-control" id="title" name="title" onChange={onChange} value={note.title} minLength={5} required  aria-describedby="emailHelp" />
+                <input type="text" className="form-control" id="title" name="title" onChange={onChange} value={note.title} minLength={3} required  aria-describedby="emailHelp" />
             </div>
             <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
@@ -32,7 +32,7 @@ const onChange = (e)=>{
             </div>
             <div className="mb-3">
                 <label htmlFor="tag" className="form-label">Tag</label>
-                <input type="text" className="form-control" id="tag" name="tag" onChange={onChange} value={note.tag} minLength={5} required />
+                <input type="text" className="form-control" id="tag" name="tag" onChange={onChange} value={note.tag} minLength={3} required />
             </div>
             
             <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>

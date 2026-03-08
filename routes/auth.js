@@ -10,12 +10,13 @@ const JWT_Screte = 'AakashDuggalisagoodb$oy'
 // user creation route
 
 router.post('/create', [
-    body('name', 'Enter a valid name').isLength(5),
+    body('name', 'Enter a valid name').isLength(3),
     body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Enter a valid password').isLength(3)
+    body('password', 'Enter a valid password').isLength(4)
 ], async (req, res) => {
+    let success = false
     //1 way to create user
-    // const user = User(req.body)
+    // const user = User(req.body) 
     // user.save()
     // res.send(req.body)
     // console.log(req.body)
@@ -24,14 +25,14 @@ router.post('/create', [
     //checking validation 
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
+        return res.status(400).json({ success, errors: errors.array() })
     }
 
     //3rd way 
     try {
         let user = await User.findOne({ email: req.body.email })
         if (user) {
-          return res.status(400).json({error: 'User with this email already exists'})
+            return res.status(400).json({ success, error: 'User with this email already exists' })
         }
 
         const salt = await bcrypt.genSalt(10)
@@ -47,19 +48,20 @@ router.post('/create', [
         // implementing jwt here
         // this is done as jwt require a field which will be used for comparison, here it is user id, as user id is unique
         const data = {
-            user:{
-                id:user.id
+            user: {
+                id: user.id
             }
         }
 
         // jwt also require a other field which is signature, here it is JWT_Screte for checking or comparison on it basis if info has been changed or not
 
         const authToken = jwt.sign(data, JWT_Screte)
-
-       res.send(authToken)
+        success = true
+        res.send({ success, authToken })
     } catch (error) {
         console.error(error.message)
-      return res.status(500).json('Internal Server Error')
+        success = false
+        return res.status(500).json({ success, error: 'Internal Server Error' })
     }
 
     // //2nd way to create user
@@ -81,41 +83,43 @@ router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password cannot be blank').exists()
 ], async (req, res) => {
-//if there are errors, return bad request and the errors
+    //if there are errors, return bad request and the errors
+    let success = false
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-       return res.status(400).json({ errors: errors.array() })
+        return res.status(400).json({ success, errors: errors.array() })
     }
-    const {email, password} = req.body
+    const { email, password } = req.body
 
     try {
-        let user = await User.findOne({email})
+        let user = await User.findOne({ email })
         if (!user) {
-           return res.status(400).json('Please enter valid credentials')
+            return res.status(400).json({ success, error: 'Please enter valid credentials' })
         }
         const passwordCompare = await bcrypt.compare(password, user.password)
         if (!passwordCompare) {
-           return res.status(400).json('Please enter valid credentials')
+            return res.status(400).json({ success, error: 'Please enter valid credentials' })
         }
 
         const data = {
-            user:{
+            user: {
                 id: user._id
             }
         }
 
         const authToken = jwt.sign(data, JWT_Screte)
-
-        res.json(authToken)
+        success = true
+        res.send({ success, authToken })
     } catch (error) {
         console.error(error.message)
-        res.status(500).json('Internal Server Error')
+        success = false
+        res.status(500).json({ success, error: 'Internal Server Error' })
     }
 })
 
 // fetch user details route
 
-router.post('/getUser', fetchuser, async (req, res)=>{
+router.post('/getUser', fetchuser, async (req, res) => {
     try {
         const userId = req.user.id
         const user = await User.findById(userId).select("-password")
@@ -125,4 +129,4 @@ router.post('/getUser', fetchuser, async (req, res)=>{
     }
 })
 
-module.exports = router
+module.exports = router 
