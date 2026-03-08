@@ -21,8 +21,8 @@ const Login = (props) => {
      console.log(json)
      if(json.success){
         localStorage.setItem('token', json.authToken)
-        navigate("/")
         props.showAlert("User Login Successfully", "success")
+        navigate("/")
      }else{
        props.showAlert("Invalid Credentails", "danger")
      }
@@ -35,6 +35,7 @@ const Login = (props) => {
     return (
         <>
             <form onSubmit={handleSubmit}>
+                
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="email" name="email" onChange={onChange} aria-describedby="emailHelp" />

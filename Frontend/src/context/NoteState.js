@@ -11,7 +11,7 @@ const fetchNotes = async ()=>{
   const response = await fetch(`${host}/api/notes/getAllnotes`,{
     method: 'GET',
     headers:{
-      'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk5ZWY1YWQxYTVjZDUyYjFjNGI4ZDMzIn0sImlhdCI6MTc3MjA5ODU3Mn0.D4gaJtCLckLP7T3thRZ7XrMPfeFnafPJX0tU012CTfc',
+      'auth-token' : localStorage.getItem('token'),
     }
   })
   const json = await response.json()
@@ -26,7 +26,7 @@ const addNote = async (title, description, tag)=>{
     method: 'POST',
     headers:{
       'content-type' : 'application/json',
-      'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk5ZWY1YWQxYTVjZDUyYjFjNGI4ZDMzIn0sImlhdCI6MTc3MjA5ODU3Mn0.D4gaJtCLckLP7T3thRZ7XrMPfeFnafPJX0tU012CTfc'
+      'auth-token' : localStorage.getItem('token')
     },
     body: JSON.stringify({title, description, tag})
   })
@@ -42,10 +42,11 @@ const deleteNote = async (id)=>{
     method: 'DELETE',
     headers: {
       'content-type': 'application/json',
-      'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk5ZWY1YWQxYTVjZDUyYjFjNGI4ZDMzIn0sImlhdCI6MTc3MjA5ODU3Mn0.D4gaJtCLckLP7T3thRZ7XrMPfeFnafPJX0tU012CTfc'
+      'auth-token': localStorage.getItem('token')
     }
   })
   const json = response.json()
+  console.log(json)
   
    const newNotes = notes.filter((note)=>(note._id !== id))
   setNotes(newNotes)
@@ -57,12 +58,13 @@ const editNote = async (id, title, description, tag)=>{
     method: 'PUT',
     headers:{
       'content-type' : 'application/json',
-      'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk5ZWY1YWQxYTVjZDUyYjFjNGI4ZDMzIn0sImlhdCI6MTc3MjA5ODU3Mn0.D4gaJtCLckLP7T3thRZ7XrMPfeFnafPJX0tU012CTfc'
+      'auth-token' : localStorage.getItem('token')
     },
     
     body: JSON.stringify({title, description, tag})
   })
   const json = response.json()
+  console.log(json)
   
 const newNote = JSON.parse(JSON.stringify(notes))
 for(let i = 0; i<newNote.length; i++){
