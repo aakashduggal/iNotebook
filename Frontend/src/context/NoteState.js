@@ -15,7 +15,7 @@ const fetchNotes = async ()=>{
     }
   })
   const json = await response.json()
-  console.log(json)
+  
   setNotes(json)
 }
 
@@ -46,7 +46,7 @@ const deleteNote = async (id)=>{
     }
   })
   const json = response.json()
-  console.log(json)
+  
    const newNotes = notes.filter((note)=>(note._id !== id))
   setNotes(newNotes)
 }
@@ -63,7 +63,7 @@ const editNote = async (id, title, description, tag)=>{
     body: JSON.stringify({title, description, tag})
   })
   const json = response.json()
-  console.log(json)
+  
 const newNote = JSON.parse(JSON.stringify(notes))
 for(let i = 0; i<newNote.length; i++){
   const element = newNote[i]
